@@ -1,0 +1,428 @@
+{
+	"info": {
+		"_postman_id": "96660c9d-7f6c-45f1-8d78-cafef73b3643",
+		"name": "Grecords",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Records",
+			"item": [
+				{
+					"name": "Index",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{env_host}}/v1/records/",
+							"host": [
+								"{{env_host}}"
+							],
+							"path": [
+								"v1",
+								"records",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Show",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{env_host}}/v1/records/{{record_id}}",
+							"host": [
+								"{{env_host}}"
+							],
+							"path": [
+								"v1",
+								"records",
+								"{{record_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "0fa3e382-e357-4494-ad61-9b1d1a230f67",
+								"exec": [
+									"const responseJson = pm.response.json();",
+									"const id = responseJson['id']",
+									"pm.environment.set(\"record_id\", id);",
+									"",
+									"if (responseJson['artists'] && responseJson['artists'][0] && responseJson['artists'][0]['id']) {",
+									"    pm.environment.set(\"artist_id\", responseJson['artists'][0]['id']);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"SomeTitle\",\n    \"condition\": \"unplayed\",\n    \"year\": \"1877\",\n    \"description\": \"One of only 100 in existence!\",\n    \"artistIds\": [{{artist_id}}]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{env_host}}/v1/records/",
+							"host": [
+								"{{env_host}}"
+							],
+							"path": [
+								"v1",
+								"records",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Records for artist by year",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{env_host}}/v1/records/aggregated?function=count&where=artists.id:=:{{artist_id}}&group_by=year",
+							"host": [
+								"{{env_host}}"
+							],
+							"path": [
+								"v1",
+								"records",
+								"aggregated"
+							],
+							"query": [
+								{
+									"key": "function",
+									"value": "count"
+								},
+								{
+									"key": "where",
+									"value": "artists.id:=:{{artist_id}}"
+								},
+								{
+									"key": "group_by",
+									"value": "year"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "0fa3e382-e357-4494-ad61-9b1d1a230f67",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"SomeOtherTitle\",\n    \"condition\": \"used\",\n    \"year\": \"1900\",\n    \"description\": \"Other description\",\n    \"artistIds\": [1]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{env_host}}/v1/records/{{record_id}}",
+							"host": [
+								"{{env_host}}"
+							],
+							"path": [
+								"v1",
+								"records",
+								"{{record_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "0fa3e382-e357-4494-ad61-9b1d1a230f67",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{env_host}}/v1/records/{{record_id}}",
+							"host": [
+								"{{env_host}}"
+							],
+							"path": [
+								"v1",
+								"records",
+								"{{record_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Most common word",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{env_host}}/v1/records/most-common-word",
+							"host": [
+								"{{env_host}}"
+							],
+							"path": [
+								"v1",
+								"records",
+								"most-common-word"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Index (With Query)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{env_host}}/v1/records/?where=artists.show_name:like:Linkin%25",
+							"host": [
+								"{{env_host}}"
+							],
+							"path": [
+								"v1",
+								"records",
+								""
+							],
+							"query": [
+								{
+									"key": "where",
+									"value": "artists.show_name:like:Linkin%25"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Artists",
+			"item": [
+				{
+					"name": "Index",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{env_host}}/v1/artists/?limit=3&offset=0",
+							"host": [
+								"{{env_host}}"
+							],
+							"path": [
+								"v1",
+								"artists",
+								""
+							],
+							"query": [
+								{
+									"key": "where",
+									"value": "artists.id:=:{{artist_id}}",
+									"disabled": true
+								},
+								{
+									"key": "where",
+									"value": "artists.id:=:2",
+									"disabled": true
+								},
+								{
+									"key": "where",
+									"value": "artists.show_name:like:Linkin%25",
+									"disabled": true
+								},
+								{
+									"key": "limit",
+									"value": "3"
+								},
+								{
+									"key": "offset",
+									"value": "0"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Show",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{env_host}}/v1/artists/{{artist_id}}",
+							"host": [
+								"{{env_host}}"
+							],
+							"path": [
+								"v1",
+								"artists",
+								"{{artist_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"first_name\": \"first_name\",\n    \"last_name\": \"last_name\",\n    \"show_name\": \"show_name\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{env_host}}/v1/artists/{{artist_id}}",
+							"host": [
+								"{{env_host}}"
+							],
+							"path": [
+								"v1",
+								"artists",
+								"{{artist_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "9c075874-58a7-4dc7-9967-e38550252180",
+								"exec": [
+									"const responseJson = pm.response.json();",
+									"const id = responseJson['id']",
+									"pm.environment.set(\"artist_id\", id);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"first_name\": \"f\",\n    \"last_name\": \"l\",\n    \"show_name\": \"s\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{env_host}}/v1/artists/",
+							"host": [
+								"{{env_host}}"
+							],
+							"path": [
+								"v1",
+								"artists",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{env_host}}/v1/artists/{{artist_id}}",
+							"host": [
+								"{{env_host}}"
+							],
+							"path": [
+								"v1",
+								"artists",
+								"{{artist_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
